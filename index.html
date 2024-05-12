@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de Cuestionarios</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.4.456/pdf.min.js"></script>
+    <style>
+        #quizContainer {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 10px;
+        }
+        .pregunta h2 {
+            color: navy;
+        }
+        .pregunta ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .pregunta li {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="pdfInput" accept=".pdf">
+    <input type="number" id="numGrupos" placeholder="Número de preguntas" min="1" max="50" value="1">
+    <button onclick="cargarPDF()">Crear Cuestionario</button>
+    <div id="resultado"></div>
+
+    <!-- Cargar librerías necesarias -->
+    <script src="script.js"></script>
+</body>
+</html>
