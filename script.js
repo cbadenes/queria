@@ -50,23 +50,26 @@ async function cargarPDF() {
                     validarRespuesta(data, form);
                 };
 
+                // Desordenar la lista y mostrar el resultado
+                let lista = desordenarListaFisherYates([1, 2, 3, 4]);
+                console.log(lista);
+
                 // Añadir las opciones como elementos del formulario
-                Object.keys(data).forEach(key => {
-                    if (key.startsWith('OPCION')) {
-                        const opcionLabel = document.createElement('label');
-                        const opcionInput = document.createElement('input');
-                        opcionInput.type = 'radio';
-                        opcionInput.name = 'respuesta' + index;  // Todos los botones de radio de una pregunta comparten el mismo 'name'
-                        opcionInput.value = data[key];
+                lista.forEach(number => {
+                    const opcionLabel = document.createElement('label');
+                    const opcionInput = document.createElement('input');
+                    opcionInput.type = 'radio';
+                    opcionInput.name = 'respuesta' + number;  // Todos los botones de radio de una pregunta comparten el mismo 'name'
+                    const key = "OPCION" + number
+                    opcionInput.value = data[key];
 
-                        const opcionText = document.createTextNode(data[key]);
-                        opcionLabel.appendChild(opcionInput);
-                        opcionLabel.appendChild(opcionText);
+                    const opcionText = document.createTextNode(data[key]);
+                    opcionLabel.appendChild(opcionInput);
+                    opcionLabel.appendChild(opcionText);
 
-                        const listItem = document.createElement('li');
-                        listItem.appendChild(opcionLabel);
-                        form.appendChild(listItem);
-                    }
+                    const listItem = document.createElement('li');
+                    listItem.appendChild(opcionLabel);
+                    form.appendChild(listItem);
                 });
 
                 // Añadir botón de envío al formulario
@@ -107,11 +110,22 @@ function validarRespuesta(data, form) {
         }
     });
     
+    let resultado = seleccionado.localeCompare(data.RESPUESTA, 'es', { sensitivity: 'base' });
+
     let mensaje;
-    if (seleccionado === data.RESPUESTA) {
-        mensaje = 'Respuesta correcta!\n';
+    if (resultado === 0) {
+        mensaje = 'Respuesta correcta!\n' + data.EVIDENCIA;
     } else {
         mensaje = 'Respuesta incorrecta.\n' + data.EVIDENCIA;
     }
     alert(mensaje);  // Mostrar el mensaje con la evidencia
+}
+
+// Función para desordenar la lista usando el algoritmo Fisher-Yates
+function desordenarListaFisherYates(lista) {
+    for (let i = lista.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [lista[i], lista[j]] = [lista[j], lista[i]]; // Intercambiar elementos
+    }
+    return lista;
 }
