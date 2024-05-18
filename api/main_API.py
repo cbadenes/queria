@@ -44,6 +44,7 @@ async def genera_cuestionario(input: DataInput):
 
     end_time = time.time()
     duration = end_time - start_time  
+    print(json.dumps(output, indent=2, ensure_ascii=False))
     print(f"Request served in {duration} seconds")
     #return  json.dumps(output, indent=2, ensure_ascii=False)
     return output
