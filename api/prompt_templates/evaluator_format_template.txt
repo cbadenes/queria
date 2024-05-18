@@ -7,11 +7,11 @@ Debes evaluar la respuesta del estudiante y dar un puntaje. Si la respuesta es i
     La respuesta del estudiante es: {answer}
     --------------------------
 
-Es obligatorio que tu respuesta sea en español y tenga el siguiente formato JSON con los campos PUNTAJE y EXPLICACION:
+Es obligatorio que tu respuesta sea en español y tenga el siguiente formato JSON con los campos VALOR y TEXTO:
     
 ```json
 {{
-    "PUNTAJE": "int"  = Field(description="puntaje final de la respuesta")
-    "EXPLICACION": "string"  = Field(description="explicación y justificación del puntaje")
+    "VALOR": "int"  = Field(description="puntaje final de la respuesta")
+    "TEXTO": "string"  = Field(description="explicación y justificación del puntaje")
 }}
 ```

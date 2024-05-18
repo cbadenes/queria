@@ -7,6 +7,7 @@ async function cargarPDF() {
     const pdfPath = fileInput.files[0];
     const loadingGif = document.getElementById('loadingGif');
     const botonCrear = document.getElementById('botonCrearCuestionario');
+    const resultadoDiv = document.getElementById('resultado');
 
 
     if (pdfPath) {
@@ -14,6 +15,7 @@ async function cargarPDF() {
         botonCrear.textContent = 'Generando...';
         botonCrear.disabled = true; // Deshabilita el botón para evitar múltiples clics
         loadingGif.style.display = 'block'; // Mostrar el GIF de carga
+        resultadoDiv.innerHTML = ''; // Limpiar el contenedor de resultados antes de generar nuevas preguntas
 
         const pdf = await pdfjsLib.getDocument(URL.createObjectURL(pdfPath)).promise;
         const numPages = pdf.numPages;
@@ -32,7 +34,7 @@ async function cargarPDF() {
 
         // Procesar cada párrafo (ejemplo: enviar cada uno al API)
         grupos.forEach((parrafo, index) => {
-            const openQuestion = Math.random() < 0.5;
+            const openQuestion = Math.random() < 0.4;
             const uniqueSeed = new Date().getTime() + index;  // Combina tiempo y el índice del bucle
 
 
@@ -195,13 +197,14 @@ function validarRespuestaOpenQuestion(data, parrafo, form) {
     .then(response => response.json())
     .then(resultadoEvaluacion => {
         // Mostrar el contenido del JSON recibido
+        console.log(resultadoEvaluacion)
         submitButton.style.backgroundColor = ''; // Restablece el color original
         submitButton.textContent = 'Comprobar respuesta';
         submitButton.disabled = false; // Volver a habilitar el botón
-        if (resultadoEvaluacion.PUNTAJE < 5) {
-            alert(resultadoEvaluacion.EXPLICACION);
+        if (resultadoEvaluacion.VALOR < 5) {
+            alert(resultadoEvaluacion.TEXTO);
         } else {
-            alert('¡Respuesta correcta!.\n ' + resultadoEvaluacion.EXPLICACION);
+            alert('¡Respuesta correcta!.\n ' + resultadoEvaluacion.TEXTO);
         }
     })
     .catch(error => {
