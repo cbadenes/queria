@@ -109,6 +109,14 @@
             width: 90%; /* Escala la imagen para que ocupe el ancho completo del encabezado */
             height: auto; /* Mantiene la proporción de la imagen */
         }
+        label, #valorRatio {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -125,6 +133,8 @@
             <span>Intermedio</span>
             <span>Difícil</span>
         </div>        
+        <label for="ratioPreguntasAbiertas">Ratio de Preguntas Abiertas:</label><span id="valorRatio">50%</span> <!-- Muestra el valor actual del ratio -->
+        <input type="range" id="ratioPreguntasAbiertas" name="ratioPreguntasAbiertas" min="0" max="100" value="50" step="1">        
         <button id="botonCrearCuestionario" onclick="cargarPDF()">Crear Cuestionario</button>
         <img src="loading.gif" id="loadingGif" style="display: none;" alt="Cargando...">
         <div id="resultado"></div>

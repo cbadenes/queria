@@ -1,9 +1,14 @@
 // script.js
+document.getElementById('ratioPreguntasAbiertas').addEventListener('input', function() {
+    document.getElementById('valorRatio').textContent = this.value + '%';
+});
+
 
 async function cargarPDF() {
     const fileInput = document.getElementById('pdfInput');
     const numGrupos = parseInt(document.getElementById('numGrupos').value) || 1;
     const nivelDificultad = parseInt(document.getElementById('nivelDificultad').value) || 1;
+    const nivelPreguntasAbiertas = parseInt(document.getElementById('ratioPreguntasAbiertas').value) || 50;
     const pdfPath = fileInput.files[0];
     const loadingGif = document.getElementById('loadingGif');
     const botonCrear = document.getElementById('botonCrearCuestionario');
@@ -34,8 +39,8 @@ async function cargarPDF() {
 
         // Procesar cada párrafo (ejemplo: enviar cada uno al API)
         grupos.forEach((parrafo, index) => {
-            const openQuestion = Math.random() < 0.4;
-            const uniqueSeed = new Date().getTime() + index;  // Combina tiempo y el índice del bucle
+            ratio = nivelPreguntasAbiertas / 100
+            const openQuestion = Math.random() < ratio;            
 
 
             fetch('http://localhost:8000/generate_quiz/', {
