@@ -60,6 +60,7 @@ async def answer_evaluation(input: DataInput):
     end_time = time.time()
     duration = end_time - start_time  
     print(f"Request served in {duration} seconds")
-    return  json.dumps(output, indent=2, ensure_ascii=False)
+    #return  json.dumps(output, indent=2, ensure_ascii=False)
+    return output
 
 
