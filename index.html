@@ -3,50 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <title>Cuestionario Interactivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.4.456/pdf.min.js"></script>
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+        }
         #quizContainer {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 10px;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #loadingGif {
+            display: none; /* Oculto por defecto */
+            width: 100px;
+            height: 100px;
+            margin: 20px auto; /* Centrado horizontalmente */
+        }
+        #botonCrearCuestionario {
+            padding: 10px 20px;
+            background-color: #0056b3; /* Un azul oscuro */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold; /* Opcional: para hacer el texto un poco más destacado */
+        }
+        #botonCrearCuestionario:hover {
+            background-color: #003f7f; /* Un azul más oscuro para el hover */
+        }
+        #nivelDificultad {
+            width: 95%; /* O ajusta según tu diseño específico */
+            margin: 10px 0;
+        }
+        #etiquetasDificultad {
+            display: flex;
+            justify-content: space-between;
+        }
+        #etiquetasDificultad span {
+            color: #4CAF50;
         }
         .pregunta h2 {
-            color: navy;
+            color: #0056b3;
         }
         .pregunta ul {
             list-style-type: none;
             padding: 0;
         }
         .pregunta li {
-            background-color: #f8f8f8;
+            background-color: #fff;
             border: 1px solid #ddd;
             padding: 8px;
             margin-top: 5px;
+            border-radius: 4px;
         }
         button {
-            padding: 8px 16px;
-            background-color: #4CAF50;
+            width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
+            padding: 10px; /* Añade más relleno para facilitar la interacción */
+            margin-top: 5px; /* Asegura que haya espacio entre el cuadro de texto y el botón */
+            padding: 10px 20px;
+            background-color: #4c7caf;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: 500;
         }
-
         button:hover {
             background-color: #45a049;
         }
-
         form {
             margin-bottom: 20px;
+        }
+        input[type="file"],
+        input[type="number"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 95%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="text"] {
+            width: 95%; /* Hace que el cuadro de texto ocupe todo el ancho disponible */
+            padding: 8px; /* Añade algo de relleno para que sea más fácil de leer */
+            margin-bottom: 10px; /* Espacio antes del botón */
+        }
+        header {
+            width: 100%; /* Asegura que el encabezado ocupa todo el ancho de la página */
+            display: block;
+        }
+
+        header img {
+            width: 90%; /* Escala la imagen para que ocupe el ancho completo del encabezado */
+            height: auto; /* Mantiene la proporción de la imagen */
         }
     </style>
 </head>
 <body>
-    <input type="file" id="pdfInput" accept=".pdf">
-    <input type="number" id="numGrupos" placeholder="Número de preguntas" min="1" max="50" value="1">
-    <button onclick="cargarPDF()">Crear Cuestionario</button>
-    <div id="resultado"></div>
-
+    <header>
+        <img src="header.png" alt="Encabezado Universidad Politécnica de Madrid">
+    </header>
+    <div id="quizContainer">
+        <input type="file" id="pdfInput" accept=".pdf">
+        <input type="number" id="numGrupos" placeholder="Número de preguntas" min="1" max="50" value="1">
+        <label for="nivelDificultad">Nivel de Dificultad:</label>
+        <input type="range" id="nivelDificultad" name="dificultad" min="1" max="3" value="2" step="1">
+        <div id="etiquetasDificultad">
+            <span>Fácil</span>
+            <span>Intermedio</span>
+            <span>Difícil</span>
+        </div>        
+        <button id="botonCrearCuestionario" onclick="cargarPDF()">Crear Cuestionario</button>
+        <img src="loading.gif" id="loadingGif" style="display: none;" alt="Cargando...">
+        <div id="resultado"></div>
+    </div>
     <!-- Cargar librerías necesarias -->
     <script src="script.js"></script>
 </body>
