@@ -35,42 +35,80 @@ def create_quiz_generator(server, context, level, OpenQuestion = False):
         return shuffled_output
         
 
+
+
+
 def parse_question(chat_response):
     response = chat_response.replace("\n","")
+    print("Response:",response)
     json_string = response.split("{")[1].split("}")[0]
     question = json.loads("{" + json_string + "}")
     return question
 
 
 def chat(server, role, message, model = "llama3"):
+    max_intentos = 3
+    intentos = 0
+    resultado_valido = False
     messages = [
     {
         'role': role,
         'content': message,
     },
     ]
-    r = requests.post(
-        server + "/api/chat",
-        json={"model": model,  "messages": messages, "stream": True},
-    )
-    r.raise_for_status()
+    response = ""
     output = ""
+    while not resultado_valido and intentos < max_intentos:
+        response = requests.post(
+            server + "/api/chat",
+            json={"model": model,  "messages": messages, "stream": True},
+        )
+        response.raise_for_status()
+        
+        output = ""
 
-    for line in r.iter_lines():
-        body = json.loads(line)
-        if "error" in body:
-            raise Exception(body["error"])
-        if body.get("done") is False:
-            response = body.get("message", "")
-            content = response.get("content", "")
-            output += content
-            # the response streams one token at a time, print that as we receive it
-            #print(content, end="", flush=True)
+        for line in response.iter_lines():
+            body = json.loads(line)
+            if "error" in body:
+                raise Exception(body["error"])
+            if body.get("done") is False:
+                response = body.get("message", "")
+                content = response.get("content", "")
+                output += content
+                # the response streams one token at a time, print that as we receive it
+                #print(content, end="", flush=True)
 
-        if body.get("done", False):
-            response["content"] = output
-            return output
+            if body.get("done", False):
+                response["content"] = output
+                #return output
+        
+        if '{' in output:
+            resultado_valido = True
+            print('Respuesta válida recibida:')
+        else:
+            print('Respuesta no válida, repitiendo la consulta...')
+            messages.append({
+                'role': role,
+                'content': """Recuerda que es obligatorio que el resultado sea formateado en el siguiente esquema:
+    
+    ```json
+    {
+    	"PREGUNTA": "string"  // tu pregunta generada usando la información del contexto,
+        "OPCION1": "string"  // esta es una respuesta falsa,
+        "OPCION2": "string" // esta es una respuesta falsa,
+        "OPCION3": "string" // esta es una respuesta falsa,
+        "OPCION4": "string" // esta es la respuesta verdadera,
+        "EVIDENCIA": "string" // esta es una breve explicación de la respuesta correcta
+    }
+    ```
+                """,
+            })
+            intentos += 1
 
+        if intentos == max_intentos:
+            print('No se recibió una respuesta válida después de', max_intentos, 'intentos.')
+
+    return output
 
 def evaluator(server, context, question, answer):
     model = "llama3_evaluator"
