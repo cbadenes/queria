@@ -90,7 +90,7 @@ async function cargarPDF() {
                         const opcionLabel = document.createElement('label');
                         const opcionInput = document.createElement('input');
                         opcionInput.type = 'radio';
-                        opcionInput.name = 'respuesta' + number;  // Todos los botones de radio de una pregunta comparten el mismo 'name'
+                        opcionInput.name = 'respuesta';  // Todos los botones de radio de una pregunta comparten el mismo 'name'
                         const key = "OPCION" + number
                         opcionInput.value = data[key];
 
