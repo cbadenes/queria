@@ -3,6 +3,43 @@ document.getElementById('questionRatio').addEventListener('input', function() {
     document.getElementById('valorRatio').textContent = this.value + '%';
 });
 
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+function showAlert(customText, isCorrect) {
+    var modalContent = document.querySelector(".modal-content");
+    var modalText = document.getElementById("modalText");
+
+    // Usando innerHTML para permitir HTML como saltos de línea
+    modalText.innerHTML = customText.replace(/\n/g, "<br>"); // Convierte los saltos de línea en etiquetas <br>
+
+    // Eliminar clases previas para resetear los estilos
+    modalContent.classList.remove("correct-answer", "incorrect-answer");
+
+    if (isCorrect) {
+        modalContent.classList.add("correct-answer"); // Aplicar clase de estilo correcto
+    } else {
+        modalContent.classList.add("incorrect-answer"); // Aplicar clase de estilo incorrecto
+    }
+    modal.style.display = "block";
+}
+
+
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 async function loadPDF() {
     const fileInput = document.getElementById('pdfInput');
@@ -178,11 +215,13 @@ function validateResponse(data, form) {
 
     let message;
     if (result === 0) {
-        message = 'Respuesta correcta!\n' + data.EVIDENCIA;
+        message = 'Respuesta correcta!\n\n' + data.EVIDENCIA;
+        showAlert(message, true); 
     } else {
-        message = 'Respuesta incorrecta.\n' + data.EVIDENCIA;
+        message = 'Respuesta incorrecta.\n\n' + data.EVIDENCIA;
+        showAlert(message, false); 
     }
-    alert(message);  // Mostrar el mensaje con la evidencia
+    
 }
 
 function validateOpenQuestionResponse(data, parrafo, form) {
@@ -214,9 +253,9 @@ function validateOpenQuestionResponse(data, parrafo, form) {
         submitButton.textContent = 'Comprobar respuesta';
         submitButton.disabled = false; // Volver a habilitar el botón
         if (evaluationResult.VALOR < 5) {
-            alert(evaluationResult.TEXTO);
+            showAlert(evaluationResult.TEXTO, false);
         } else {
-            alert('¡Respuesta correcta!.\n ' + evaluationResult.TEXTO);
+            showAlert('¡Respuesta correcta!.\n\n ' + evaluationResult.TEXTO, true);
         }
     })
     .catch(error => {

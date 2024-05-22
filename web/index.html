@@ -137,13 +137,64 @@
             width: 100%;
             margin: 10px 0;
         }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe; /* Color de fondo por defecto */
+            margin: 15% auto; /* 15% desde la parte superior y centrado */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Ajusta el ancho según sea necesario */
+            text-align: center; /* Centrar el texto horizontalmente */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Centrar el texto verticalmente */
+            border-radius: 10px; /* Esquinas redondeadas */
+            font-size: 22px; /* Aumentar el tamaño del texto */
+            color: #000; /* Color de texto oscuro */
+        }
+        .correct-answer {
+            background-color: #7da67e; /* Verde más suave */
+        }
+        .incorrect-answer {
+            background-color: #bd706a; /* Rojo más suave */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <header>
         <img src="header.png" alt="Encabezado Universidad Politécnica de Madrid">
     </header>
-    <div id="quizContainer">
+    <!-- Modal Structure -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modalText">Some text in the Modal..</p>
+        </div>
+    </div>
+      <div id="quizContainer">
         <input type="file" id="pdfInput" accept=".pdf">
         <input type="number" id="numQuestions" placeholder="Número de preguntas" min="1" max="50" value="1">
         <label for="difLevel">Nivel de Dificultad:</label>
