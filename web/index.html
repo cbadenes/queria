@@ -32,7 +32,7 @@
             height: 100px;
             margin: 20px auto; /* Centrado horizontalmente */
         }
-        #botonCrearCuestionario {
+        #createQuestionerButton {
             padding: 10px 20px;
             background-color: #0056b3; /* Un azul oscuro */
             color: white;
@@ -41,33 +41,53 @@
             cursor: pointer;
             font-weight: bold; /* Opcional: para hacer el texto un poco más destacado */
         }
-        #botonCrearCuestionario:hover {
+        #createQuestionerButton:hover {
             background-color: #003f7f; /* Un azul más oscuro para el hover */
         }
-        #nivelDificultad {
+        #difLevel {
             width: 95%; /* O ajusta según tu diseño específico */
             margin: 10px 0;
         }
-        #etiquetasDificultad {
+        #difLabels {
             display: flex;
             justify-content: space-between;
         }
-        #etiquetasDificultad span {
+        #difLabels span {
             color: #4CAF50;
         }
-        .pregunta h2 {
+        /* Elimina los puntos de viñeta de las listas en el contenedor de resultados */
+        #quiz ul {
+            list-style-type: none; /* Elimina los bullet points */
+            padding: 0; /* Opcional: Elimina el padding por defecto de las listas */
+        }
+
+        #quiz li {
+            margin: 5px 0; /* Ajusta el margen entre elementos de lista según sea necesario */
+        }
+        .question h2 {
             color: #0056b3;
         }
-        .pregunta ul {
+        .question ul {
             list-style-type: none;
             padding: 0;
         }
-        .pregunta li {
+        .question li::marker {
+            content: none; /* Elimina el marcador de la lista */
+        }
+        .question li {
             background-color: #fff;
             border: 1px solid #ddd;
             padding: 8px;
             margin-top: 5px;
             border-radius: 4px;
+        }
+        .question textarea {
+            width: 100%; /* Asegura que el textarea sea tan ancho como su contenedor */
+            height: 100px; /* Puedes ajustar esto según la cantidad de líneas que quieras mostrar */
+            padding: 8px; /* Añade un poco de padding para el texto */
+            box-sizing: border-box; /* Asegura que el padding y border no añadan al ancho total */
+            border-radius: 4px; /* Opcional: para bordes redondeados */
+            border: 1px solid #ccc; /* Opcional: añade un borde sutil */
         }
         button {
             width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
@@ -125,21 +145,20 @@
     </header>
     <div id="quizContainer">
         <input type="file" id="pdfInput" accept=".pdf">
-        <input type="number" id="numGrupos" placeholder="Número de preguntas" min="1" max="50" value="1">
-        <label for="nivelDificultad">Nivel de Dificultad:</label>
-        <input type="range" id="nivelDificultad" name="dificultad" min="1" max="3" value="2" step="1">
-        <div id="etiquetasDificultad">
+        <input type="number" id="numQuestions" placeholder="Número de preguntas" min="1" max="50" value="1">
+        <label for="difLevel">Nivel de Dificultad:</label>
+        <input type="range" id="difLevel" name="dificultad" min="1" max="3" value="2" step="1">
+        <div id="difLabels">
             <span>Fácil</span>
             <span>Intermedio</span>
             <span>Difícil</span>
         </div>        
-        <label for="ratioPreguntasAbiertas">Ratio de Preguntas Abiertas:</label><span id="valorRatio">50%</span> <!-- Muestra el valor actual del ratio -->
-        <input type="range" id="ratioPreguntasAbiertas" name="ratioPreguntasAbiertas" min="0" max="100" value="50" step="1">        
-        <button id="botonCrearCuestionario" onclick="cargarPDF()">Crear Cuestionario</button>
+        <label for="questionRatio">Ratio de Preguntas Abiertas:</label><span id="valorRatio">50%</span> 
+        <input type="range" id="questionRatio" name="questionRatio" min="0" max="100" value="50" step="1">        
+        <button id="createQuestionerButton" onclick="loadPDF()">Crear Cuestionario</button>
         <img src="loading.gif" id="loadingGif" style="display: none;" alt="Cargando...">
-        <div id="resultado"></div>
+        <div id="quiz"></div>
     </div>
-    <!-- Cargar librerías necesarias -->
     <script src="script.js"></script>
 </body>
 </html>
