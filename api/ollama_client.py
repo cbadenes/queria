@@ -89,7 +89,7 @@ def chat(server, role, message, model = "llama3"):
             print('Respuesta no válida, repitiendo la consulta...')
             messages.append({
                 'role': role,
-                'content': """Recuerda que es obligatorio que el resultado sea formateado en el siguiente esquema:
+                'content': """Recuerda que es obligatorio que el resultado sea en español formateado con el siguiente esquema:
     
     ```json
     {
