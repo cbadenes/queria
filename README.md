@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/cbadenes/queria/blob/main/web/logo.png" alt="Logo de QuerIA" width="200" height="200">
+</p>
+
 # QuerIA: Automatización y Personalización de Cuestionarios
 
 ## Descripción
