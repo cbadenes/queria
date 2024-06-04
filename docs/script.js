@@ -1,6 +1,6 @@
 // Configuración global
 const config = {
-    baseURL: 'http://localhost:8000'
+    baseURL: 'https://librairy.linkeddata.es/queria'
 };
 
 
