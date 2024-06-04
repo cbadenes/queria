@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  app:
+    image: cbadenes/queria
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      SERVER_URL: "https://librairy.linkeddata.es/ollama"
+    restart: unless-stopped

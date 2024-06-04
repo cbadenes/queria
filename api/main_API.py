@@ -7,11 +7,11 @@ from pydantic import BaseModel
 import json
 import time
 import uvicorn
-
+import os
 
 
 #server = "https://librairy.linkeddata.es/ollama" #remote
-server = "http://127.0.0.1:11434" #localPaul
+server = os.getenv("SERVER_URL", "http://127.0.0.1:11434")  # Default URL if not specified
 
 app = FastAPI()
 
