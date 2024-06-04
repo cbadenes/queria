@@ -1,3 +1,9 @@
+// Configuración global
+const config = {
+    baseURL: 'http://localhost:8000'
+};
+
+
 // script.js
 document.getElementById('questionRatio').addEventListener('input', function() {
     document.getElementById('valorRatio').textContent = this.value + '%';
@@ -80,7 +86,7 @@ async function loadPDF() {
             const openQuestion = Math.random() < ratio;            
 
 
-            fetch('http://localhost:8000/generate_quiz/', {
+            fetch(`${config.baseURL}/generate_quiz/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -238,7 +244,7 @@ function validateOpenQuestionResponse(data, parrafo, form) {
     submitButton.textContent = 'Validando...';
     submitButton.disabled = true; // Opcional: deshabilitar el botón para evitar múltiples envíos
 
-    fetch('http://localhost:8000/evaluate_answer/', {
+    fetch(`${config.baseURL}/evaluate_answer/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
