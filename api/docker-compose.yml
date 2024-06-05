@@ -4,7 +4,9 @@ services:
     image: cbadenes/queria
     build: .
     ports:
-      - "80:80"
+      - "8044:80"
     environment:
       SERVER_URL: "https://librairy.linkeddata.es/ollama"
+      MAX_SIZE: "150"
+      USE_FIXED_MODEL: "true"
     restart: unless-stopped
