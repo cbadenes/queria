@@ -15,7 +15,7 @@ var modal = document.getElementById("myModal");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-function showAlert(customText, isCorrect) {
+function showAlert(customText, score) {
     var modalContent = document.querySelector(".modal-content");
     var modalText = document.getElementById("modalText");
 
@@ -23,11 +23,13 @@ function showAlert(customText, isCorrect) {
     modalText.innerHTML = customText.replace(/\n/g, "<br>"); // Convierte los saltos de línea en etiquetas <br>
 
     // Eliminar clases previas para resetear los estilos
-    modalContent.classList.remove("correct-answer", "incorrect-answer");
+    modalContent.classList.remove("correct-answer", "incorrect-answer", "partially-correct-answer");
 
-    if (isCorrect) {
+    if (score == 0) {
+        modalContent.classList.add("partially-correct-answer"); // Aplicar clase de estilo correcto
+    } else if (score > 0){
         modalContent.classList.add("correct-answer"); // Aplicar clase de estilo correcto
-    } else {
+    }else {
         modalContent.classList.add("incorrect-answer"); // Aplicar clase de estilo incorrecto
     }
     modal.style.display = "block";
@@ -197,16 +199,36 @@ async function loadPDF() {
     }
 }
 
-function splitChunks(sentences, numQuestions) {
+function splitChunks(sentences, numQuestions, minSize=2, maxSize=20) {
     const chunks = [];
-    const groupSentences = Math.ceil(sentences.length / numQuestions);
+    let index = 0;
 
-    for (let i = 0; i < numQuestions; i++) {
-        chunks.push(sentences.slice(i * groupSentences, (i + 1) * groupSentences));
+    // Primero, creamos todos los chunks de tamaño variable
+    while (index < sentences.length) {
+        const groupSize = Math.floor(Math.random() * (maxSize - minSize + 1) + minSize);
+        chunks.push(sentences.slice(index, Math.min(index + groupSize, sentences.length)));
+        index += groupSize;
     }
 
+    // Luego, si hay más chunks que el número de preguntas, seleccionamos aleatoriamente
+    if (chunks.length > numQuestions) {
+        const randomChunks = [];
+        const selectedIndices = new Set();
+        while (randomChunks.length < numQuestions) {
+            const randomIndex = Math.floor(Math.random() * chunks.length);
+            if (!selectedIndices.has(randomIndex)) {
+                selectedIndices.add(randomIndex);
+                randomChunks.push(chunks[randomIndex]);
+            }
+        }
+        return randomChunks;
+    }
+
+    // Si el número de chunks creados es menor o igual al número de preguntas, los devolvemos todos
     return chunks;
 }
+
+
 
 function validateResponse(data, form) {
     const options = form.querySelectorAll('input[type="radio"]');
@@ -222,10 +244,10 @@ function validateResponse(data, form) {
     let message;
     if (result === 0) {
         message = 'Respuesta correcta!\n\n' + data.EVIDENCIA;
-        showAlert(message, true); 
+        showAlert(message, 1); 
     } else {
         message = 'Respuesta incorrecta.\n\n' + data.EVIDENCIA;
-        showAlert(message, false); 
+        showAlert(message, -1); 
     }
     
 }
@@ -258,10 +280,13 @@ function validateOpenQuestionResponse(data, parrafo, form) {
         submitButton.style.backgroundColor = ''; // Restablece el color original
         submitButton.textContent = 'Comprobar respuesta';
         submitButton.disabled = false; // Volver a habilitar el botón
-        if (evaluationResult.VALOR < 5) {
-            showAlert(evaluationResult.TEXTO, false);
-        } else {
-            showAlert('¡Respuesta correcta!.\n\n ' + evaluationResult.TEXTO, true);
+        if (evaluationResult.VALOR < 0.5) {
+            showAlert(evaluationResult.TEXTO, -1);
+        } else if (evaluationResult.VALOR > 0.5) {
+            showAlert('¡Respuesta correcta!.\n\n ' + evaluationResult.TEXTO, 1);
+        }
+        else {
+            showAlert(evaluationResult.TEXTO, 0);
         }
     })
     .catch(error => {

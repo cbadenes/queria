@@ -2,8 +2,25 @@ from pathlib import Path
 import requests
 import json
 import random
+import logging
+from datetime import datetime
+import os
+
+
+max_size = int(os.getenv("MAX_SIZE", "1000"))  # Default URL if not specified
+use_fixed_model = os.getenv('USE_FIXED_MODEL', 'false').lower() == 'true'
+
+# Configuración básica del logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+print("Versión de Requests:", requests.__version__)
+
+def log(message):
+    #print(f"{datetime.now()} - {message}")
+    return
 
 def create_quiz_generator(server, context, level, OpenQuestion = False):
+    context_content = context[:max_size]
     if OpenQuestion:
         print("Open Question")
         sys_model = "llama3_easy_Open" if level == "easy" else "llama3_medium_Open" if level == "medium" else "llama3_hard_Open"
@@ -11,7 +28,7 @@ def create_quiz_generator(server, context, level, OpenQuestion = False):
         question_format_template = Path("./prompt_templates/openQuestion_format_template.txt").read_text().strip()
         prompt_user = Path("./prompt_templates/" + "human" + "_OpenQuestion_"+level+".txt").read_text().strip() + question_format_template
     
-        response = chat(server,"user",prompt_user.replace('{context}',context), sys_model)
+        response = chat(server,"user",prompt_user.replace('{context}',context_content), sys_model)
         final_output = parse_question(response)
         return final_output    
     else:
@@ -20,7 +37,7 @@ def create_quiz_generator(server, context, level, OpenQuestion = False):
         question_format_template = Path("./prompt_templates/question_format_template.txt").read_text().strip()
         prompt_user = Path("./prompt_templates/" + "human" + "_template_"+level+".txt").read_text().strip() + question_format_template
     
-        response = chat(server,"user",prompt_user.replace('{context}',context), sys_model)
+        response = chat(server,"user",prompt_user.replace('{context}',context_content), sys_model)
 
         final_output = parse_question(response)
 
@@ -35,9 +52,6 @@ def create_quiz_generator(server, context, level, OpenQuestion = False):
         return shuffled_output
         
 
-
-
-
 def parse_question(chat_response):
     response = chat_response.replace("\n","")
     print("Response:",response)
@@ -47,6 +61,7 @@ def parse_question(chat_response):
 
 
 def chat(server, role, message, model = "llama3"):
+    chat_model = "llama3" if use_fixed_model else model
     max_intentos = 3
     intentos = 0
     resultado_valido = False
@@ -59,11 +74,23 @@ def chat(server, role, message, model = "llama3"):
     response = ""
     output = ""
     while not resultado_valido and intentos < max_intentos:
-        response = requests.post(
-            server + "/api/chat",
-            json={"model": model,  "messages": messages, "stream": True},
-        )
-        response.raise_for_status()
+        try:
+            log("Role:" + role)
+            log("Context: " + message)
+            log("making a request to chat: " + chat_model)
+            response = requests.post(
+                server + "/api/chat",
+                json={"model": chat_model,  "messages": messages, "stream": True},
+                timeout=(100,300)
+            )
+            log("response received from chat: " + chat_model)
+            response.raise_for_status()
+        except requests.exceptions.Timeout:
+            print("La solicitud ha superado el tiempo de espera.")
+        except requests.exceptions.RequestException as e:
+            print(f"Ocurrió un error: {e}")
+        #else:
+            #print("Respuesta obtenida:", response.text)
         
         output = ""
 
@@ -112,7 +139,7 @@ def chat(server, role, message, model = "llama3"):
 
 def evaluator(server, context, question, answer):
     model = "llama3_evaluator"
-    content = context.strip()
+    content = context.strip()[:max_size]
     prompt_user= Path("./prompt_templates/evaluator_format_template.txt").read_text().strip()
     prompt_user = prompt_user.replace('{question}', question).replace('{answer}', answer).replace('{context}', content)
 
@@ -120,3 +147,4 @@ def evaluator(server, context, question, answer):
     response = chat(server, "user", prompt_user, model)
     print("Response:", response)
     return parse_question(response)
+
