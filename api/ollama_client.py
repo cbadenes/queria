@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 print("Versión de Requests:", requests.__version__)
 
 def log(message):
-    #print(f"{datetime.now()} - {message}")
-    return
+    print(f"{datetime.now()} - {message}")
+    #return
 
 def create_quiz_generator(server, context, level, OpenQuestion = False):
     context_content = context[:max_size]
