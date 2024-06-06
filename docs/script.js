@@ -1,6 +1,6 @@
 // Configuración global
 const config = {
-    baseURL: 'https://librairy.linkeddata.es/queria'
+    baseURL: 'https://librairy.linkeddata.es/quiz'
 };
 
 
