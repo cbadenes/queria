@@ -2,55 +2,55 @@
   <img src="https://github.com/cbadenes/queria/blob/main/docs/logo.png" alt="Logo de QuerIA" width="200" height="200">
 </p>
 
-# QuerIA: Automatización y Personalización de Cuestionarios
+# QuerIA: Automation and Customization of Questionnaires
 
-## Descripción
-**QuerIA** es una plataforma diseñada para automatizar la creación y personalización de cuestionarios utilizando tecnologías de Inteligencia Artificial (IA). El sistema permite a los usuarios generar cuestionarios adaptados a necesidades específicas de aprendizaje, facilitando la autoevaluación y el refuerzo educativo desde cualquier lugar y en cualquier momento.
+## Description
+**QuerIA** is a platform designed to automate the creation and customization of questionnaires using Artificial Intelligence (AI) technologies. The system allows users to generate quizzes tailored to specific learning needs, facilitating self-assessment and educational reinforcement anytime and anywhere.
 
-## Características Principales
-- **Generación Automatizada de Preguntas**: Crea preguntas de múltiple elección o abiertas basadas en el contenido proporcionado.
-- **Personalización de Cuestionarios**: Ajusta los cuestionarios según el nivel de dificultad deseado y el porcentaje de preguntas abiertas.
-- **Interfaz Sencilla de Usuario**: Facilidad de uso a través de una interfaz web amigable.
-- **Implementación de IA**: Utiliza algoritmos de IA para analizar el texto y formular preguntas pertinentes y desafiantes.
+## Key Features
+- **Automated Question Generation**: Creates multiple-choice or open-ended questions based on the provided content.
+- **Quiz Customization**: Adjusts quizzes according to the desired difficulty level and the percentage of open-ended questions.
+- **User-Friendly Interface**: Easy to use through a web-friendly interface.
+- **AI Implementation**: Uses AI algorithms to analyze text and formulate relevant and challenging questions.
 
-## Tecnologías Utilizadas
+## Technologies Used
 - Frontend: HTML, CSS, JavaScript
 - Backend: FastAPI, LLMs
 
-## Requisitos
-Para ejecutar **QuerIA**, necesitarás lo siguiente:
-- Navegador web moderno (Chrome, Firefox, Safari, Edge)
-- [Otras dependencias, e.g., Docker si es necesario, entorno de Python]
+## Requirements
+To run **QuerIA**, you will need the following:
+- A modern web browser (Chrome, Firefox, Safari, Edge)
+- Other dependencies, (e.g., Docker if necessary, Python environment)
 
-## Instalación y Ejecución
-Sigue estos pasos para poner en marcha el sistema **QuerIA**:
+## Installation and Execution
+Follow these steps to set up the **QuerIA** system:
 
-### Configurar el entorno de ejecución
-1. Clona el repositorio del proyecto en tu máquina local:
+### Set Up the Runtime Environment
+1. Clone the project repository to your local machine:
    ```bash
    git clone https://github.com/cbadenes/queria.git
    cd queria
    ```  
-2. Navega a la carpeta api y ejecuta el script run.sh para arrancar el servidor de la API
+2. Navigate to the api folder and run the run.sh script to start the API server:
     ```bash
     cd api
     ./run.sh
     ```  
-Este script configurará y lanzará el servidor necesario para la generación de cuestionarios.  
+This script will set up and launch the server required for quiz generation.
 
-3. Abre el archivo index.html que se encuentra en la carpeta web con tu navegador web para utilizar la aplicación:  
+3. Open the ```index.html``` file located in the web folder with your web browser to use the application:  
     ```bash
     chrome web/index.html
     ```
-Esto te permitirá interactuar con QuerIA desde la interfaz web.
+This will allow you to interact with QuerIA from the web interface.
 
 
-## Soporte
-Si tienes problemas o preguntas acerca de QuerIA, por favor [abre un issue](https://github.com/cbadenes/queria/issues) en el repositorio de GitHub.
+## Support
+If you encounter any issues or have questions about QuerIA, please [open an issue](https://github.com/cbadenes/queria/issues) in the GitHub repository.
 
-## Contribuir
-Las contribuciones son bienvenidas. Si deseas contribuir al proyecto, por favor revisa las [guías de contribución](https://github.com/cbadenes/queria) o [abre un pull request](https://github.com/cbadenes/queria/pulls).
+## Contributing
+Contributions are welcome. If you would like to contribute to the project, please check the [contribution guidelines](https://github.com/cbadenes/queria) or [open a pull request.](https://github.com/cbadenes/queria/pulls).
 
 
-## Licencia
-Este proyecto está licenciado bajo [Apache-2.0 license], ver el archivo LICENSE.md para más detalles.
+## License
+his project is licensed under the [Apache-2.0 license]. See the ```LICENSE``` file for more details.
